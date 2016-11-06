@@ -23,6 +23,7 @@ function Get-PersonFace {
         [String]$personGroupId
     )
 
+    #Todo: Implement handling for multiple persons with the same name
     if ($PsCmdlet.ParameterSetName -eq 'byPersonName') {
         $personId = Get-Person $personName -personGroupId $personGroupId | select -ExpandProperty personId
     }
