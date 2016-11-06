@@ -5,7 +5,7 @@ Describe "RemovePerson" {
 
     New-PersonGroup "pester-1"
         
-    Context "When a person is being deleted" {
+    Context "When a person is being deleted by name" {
         New-Person -name "pester-person-1" -personGroupId "pester-1"
         Remove-Person -name "pester-person-1" -personGroupId "pester-1"
         
@@ -13,11 +13,26 @@ Describe "RemovePerson" {
             {Get-Person -name "pester-person-1" -personGroupId "pester-1"} | Should Throw
         }
     }
-    
-    Context "When a non-existing person is being deleted" {
+
+    Context "When a person is being deleted by id" {
+        New-Person -name "pester-person-1" -personGroupId "pester-1"
+        $person = Get-Person -name "pester-person-1" -personGroupId "pester-1"
+        Remove-Person -id $person.personId -personGroupId "pester-1"
         
+        It "Should not exist anymore / throw when trying to retrieve" {
+            {Get-Person -name "pester-person-1" -personGroupId "pester-1"} | Should Throw
+        }
+    }
+    
+    Context "When a non-existing person is being deleted by name" {
         It "Should throw an exception" {
             {Remove-Person -name "pester-person-non-existing" -personGroupId "pester-1"} | Should Throw
+        }
+    }
+
+    Context "When a non-existing person is being deleted by name" {
+        It "Should throw an exception" {
+            {Remove-Person -id "42" -personGroupId "pester-1"} | Should Throw
         }
     }
 
