@@ -16,7 +16,7 @@ function Get-Person {
         ,
         [parameter(
             Mandatory=$false,
-            ParameterSetName='byId')
+            ParameterSetName='ListAll')
         ]
         [Switch]$ListAll
         ,
