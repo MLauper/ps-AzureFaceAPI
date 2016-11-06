@@ -29,7 +29,6 @@ function New-PersonFace
         ,
         # Location of the target face (exactly one), give a list with left, top, width, heigth
         [parameter(Mandatory=$false)]
-        [ValidateScript({($_ | measure).count -eq 4})]
         [System.Collections.ArrayList] $targetFace
         ,
         [parameter(
@@ -53,6 +52,10 @@ function New-PersonFace
         )]
         [string]$ImageUrl
     )
+
+    if ($targetFace -ne $null -and $targetFace.count -ne 4){
+        throw "Illegal paramter value for targetFace. Please provide a list with left, top, width and height"
+    }
 
     if ($PsCmdlet.ParameterSetName -like 'byPersonName*') {
         $person = Get-Person $personName -personGroupId $personGroupId
