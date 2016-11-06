@@ -45,7 +45,7 @@ Describe "GetPerson" {
     Context "When no faces were uploaded"{
         $result =  Get-Person "pester-person-1" -personGroupId "pester-persongroup-1"
         It "Shout not retrieve any"{
-            ($result | select persistedFaceIds | measure).count | Should Be 0
+            ($result | select -ExpandProperty persistedFaceIds | measure).count | Should Be 0
         }        
     }
 
@@ -56,7 +56,7 @@ Describe "GetPerson" {
     Context "When a person has uploaded faces" {
         $result =  Get-Person "pester-person-1" -personGroupId "pester-persongroup-1"
         It "they should be returned" {
-            ($result | measure).count | Should Be 3
+            ($result | select -ExpandProperty persistedFaceIds | measure).count | Should Be 3
         }
     }
 
