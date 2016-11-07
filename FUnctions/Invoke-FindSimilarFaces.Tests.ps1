@@ -33,7 +33,6 @@ Describe "InvokeFindSimilarFaces" {
         It "Should return a result" {
             $result | Should Not BeNullOrEmpty
         }
-        Write-Host $result
     }
 
 

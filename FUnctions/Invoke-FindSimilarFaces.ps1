@@ -20,7 +20,7 @@ function Invoke-FindSimilarFaces {
         ,
         # Number of candidates returned. Max is 1000, default is 20.
         [parameter(Mandatory=$false)]
-        [Int16]$maxNumOfCandidatesReturned
+        [Int16]$maxNumOfCandidatesReturned = 20
         ,
         # Can be set to matchFace or matchPerson
         # Default is matchPerson
@@ -33,7 +33,7 @@ function Invoke-FindSimilarFaces {
     $Body = "{ `"faceId`":`"$faceId`""
     if ($PsCmdlet.ParameterSetName -eq "byFaceList"){ $Body = $Body + ",`"faceListId`":`"$faceListId`"" }
     elseif ($PsCmdlet.ParameterSetName -eq "byFaceId"){ $Body = $Body + ", `"faceIds`":" + ($faceIds | ConvertTo-Json) }
-    if ($maxNumOfCandidatesReturned -ne $null) {$Body = $Body + ",`"maxNumOfCandidatesReturned`":`"10`"" }
+    if ($maxNumOfCandidatesReturned -ne $null) {$Body = $Body + ",`"maxNumOfCandidatesReturned`":`"$maxNumOfCandidatesReturned`"" }
     if ($mode -ne "") {$Body = $Body + ",`"mode`": `"$mode`""}
     $Body = $Body + "}"
     
