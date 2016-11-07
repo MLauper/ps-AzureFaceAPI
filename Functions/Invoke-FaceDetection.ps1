@@ -26,7 +26,6 @@ function Invoke-FaceDetection {
     )
 
     $Request = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=$returnFaceId&returnFaceLandmarks=true"
-    Write-Host $request
     if ($returnFaceAttributes -ne "" -and $returnFaceAttributes -ne $null) {$Request = $Request + "&returnFaceAttributes=" }
     $returnFaceAttributes | % {$Request = $Request + ",$_"}
     
