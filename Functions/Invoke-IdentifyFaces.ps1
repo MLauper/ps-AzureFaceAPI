@@ -20,7 +20,9 @@ function Invoke-IdentifyFaces {
     $Request = "https://api.projectoxford.ai/face/v1.0/identify"
     
     $Body = "{ `"personGroupId`":`"$personGroupId`""
-    $Body = $Body + ", `"faceIds`":" + ($faceIds | ConvertTo-Json)
+    $Body = $Body + ", `"faceIds`":"
+    if (($faceIds | measure).Count -eq 1) {$Body = $Body + "[`"$($faceIds[0])`"]"}
+    elseif (($faceIds | measure).Count -gt 1) {$Body = $Body + ($faceIds | ConvertTo-Json)}
     if ($maxNumOfCandidatesReturned -ne $null) {$Body = $Body + ",`"maxNumOfCandidatesReturned`":`"$maxNumOfCandidatesReturned`"" }
     if ($confidenceThreshold -ne 0) {$Body = $Body + ",`"confidenceThreshold`": `"$confidenceThreshold`""}
     $Body = $Body + "}"

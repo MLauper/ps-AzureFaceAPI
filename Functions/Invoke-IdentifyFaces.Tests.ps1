@@ -35,5 +35,28 @@ Describe "InvokeIdentifyFaces" {
         Remove-PersonGroup -personGroupId "pester-persongroup-1"
     }
 
+    Context "When a single face should be identified in a person group"{
+        New-PersonGroup -personGroupId "pester-persongroup-1"
+        New-Person "pester-person-1" -personGroupId "pester-persongroup-1"
+        New-PersonFace -personName "pester-person-1" -personGroupId "pester-persongroup-1" -LocalImagePath "$here\..\SampleImages\Face_01.JPG"
+        New-PersonFace -personName "pester-person-1" -personGroupId "pester-persongroup-1" -LocalImagePath "$here\..\SampleImages\Face_01.JPG"
+        New-PersonFace -personName "pester-person-1" -personGroupId "pester-persongroup-1" -LocalImagePath "$here\..\SampleImages\Face_01.JPG"
+        Start-PersonGroupTraining -personGroupId "pester-persongroup-1"
+        $face = Invoke-FaceDetection -localImagePath "$here\..\SampleImages\Face_01.JPG"
+        While ($true) {
+            $trainingStatus = Get-PersonGroupTrainingStatus "pester-persongroup-1" | select -Last 1
+            if ($trainingStatus.status -ne "notstarted" -and $trainingStatus.status -ne "running"){
+                break
+            } else {
+                sleep 1
+            }
+        }
+
+        $result = Invoke-IdentifyFaces -faceIds $face.faceId -personGroup "pester-persongroup-1"
+        It "Should return a result" {
+            $result | Should Not BeNullOrEmpty
+        }
+        Remove-PersonGroup -personGroupId "pester-persongroup-1"
+    }
 
 }
